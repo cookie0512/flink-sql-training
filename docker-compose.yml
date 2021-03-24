@@ -1,0 +1,55 @@
+version: "3"
+services:
+  myzookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+    - 2181:2181
+  mykafka:
+    image: wurstmeister/kafka
+    environment:
+    - KAFKA_ZOOKEEPER_CONNECT=myzookeeper:2181
+    - KAFKA_ADVERTISED_HOST_NAME=mykafka
+      #- KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+      #- KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092
+    ports:
+    - 9092:9092
+    depends_on:
+    - myzookeeper
+  sql-client:
+    image: fhueske/flink-sql-training:1-FLINK-1.10-scala_2.11
+    command: "java -classpath /opt/data/data-producer.jar com.ververica.sql_training.data_producer.TaxiRecordProducer --input file /opt/data --output kafka mykafka:9092 --speedup 10.0"
+    depends_on:
+      - mykafka
+      - jobmanager
+    environment:
+      FLINK_JOBMANAGER_HOST: jobmanager
+      ZOOKEEPER_CONNECT: myzookeeper
+      KAFKA_BOOTSTRAP: mykafka
+    # volumes: 
+    # - ./build-image/conf/sql-client-conf.yaml:/opt/flink/conf/sql-client-conf.yaml
+  jobmanager:
+    image: flink:1.10.0-scala_2.11
+    hostname: "jobmanager"
+    expose:
+      - "6123"
+    ports:
+      - "8088:8081"
+    command: jobmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+  taskmanager:
+
+    image: flink:1.10.0-scala_2.11
+    expose:
+      - "6121"
+      - "6122"
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    links:
+      - jobmanager:jobmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+  kafka-producer:
+    build: ./kafka-producer
+    image: kafka-producer:0.1
