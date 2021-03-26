@@ -1,175 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
-
-		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-
-		xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
-
-
-
-
-
-<localRepository>D:/repository</localRepository>
-
-
-
-
-
-<pluginGroups>
-
-
-
-</pluginGroups>
-
-
-
-<proxies>
-
-
-
-</proxies>
-
-
-
-<servers>
-
-
-
-</servers>
-
+<settings>
 <!--
+<mirror>  
+	<id>alimaven</id>  
+	<name>aliyun maven</name>  
+	<url>https://maven.aliyun.com/repository/central</url>  
+	<mirrorOf>central</mirrorOf>          
+</mirror>
 -->
-<mirrorOf>central</mirrorOf> 这里最好不要写成*号，否则你项目中的pom中配置repository不生效
-
-		-->
-
 <mirrors>
-
-		<mirror>
-
-				<id>aliyunmaven</id>
-
-				<mirrorOf>*</mirrorOf>
-
-				<name>阿里云公共仓库</name>
-
-				<url>https://maven.aliyun.com/repository/public</url>
-
-		</mirror>
-
-		<mirror>
-
-				<id>aliyunmaven</id>
-
-				<mirrorOf>*</mirrorOf>
-
-				<name>阿里云谷歌仓库</name>
-
-				<url>https://maven.aliyun.com/repository/google</url>
-
-		</mirror>
-
-		<mirror>
-
-				<id>aliyunmaven</id>
-
-				<mirrorOf>*</mirrorOf>
-
-				<name>阿里云阿帕奇仓库</name>
-
-				<url>https://maven.aliyun.com/repository/apache-snapshots</url>
-
-		</mirror>
-
-		<mirror>
-
-				<id>aliyunmaven</id>
-
-				<mirrorOf>*</mirrorOf>
-
-				<name>阿里云spring仓库</name>
-
-				<url>https://maven.aliyun.com/repository/spring</url>
-
-		</mirror>
-
-		<mirror>
-
-				<id>aliyunmaven</id>
-
-				<mirrorOf>*</mirrorOf>
-
-				<name>阿里云spring插件仓库</name>
-
-				<url>https://maven.aliyun.com/repository/spring-plugin</url>
-
-		</mirror>
-
+<mirror>
+  <id>aliyunmaven</id>
+  <mirrorOf>*</mirrorOf>
+  <name>阿里云公共仓库</name>
+  <url>https://maven.aliyun.com/repository/public</url>
+</mirror>
 </mirrors>
-
-
-
-<profiles>
-
-		<profile>
-
-				<repositories>
-
-						<repository>
-
-								<id>nexus</id>
-
-								<name>local private nexus</name>
-
-								<url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-
-								<releases>
-
-										<enabled>true</enabled>
-
-								</releases>
-
-								<snapshots>
-
-										<enabled>false</enabled>
-
-								</snapshots>
-
-						</repository>
-
-				</repositories>
-
-				<pluginRepositories>
-
-						<pluginRepository>
-
-								<id>nexus</id>
-
-								<name>local private nexus</name>
-
-								<url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-
-								<releases>
-
-										<enabled>true</enabled>
-
-								</releases>
-
-								<snapshots>
-
-										<enabled>true</enabled>
-
-								</snapshots>
-
-						</pluginRepository>
-
-				</pluginRepositories>
-
-		</profile>
-
-</profiles>
-
-																																																																																																																																																																																																																																																																																																																																																																		 </settings>
-
+</settings>
 
