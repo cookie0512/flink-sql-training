@@ -2,7 +2,8 @@ package com.xxywebsite;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.xxywebsite.model.Student;
+import com.xxywebsite.helper.PackageStateMockHelper;
+import com.xxywebsite.model.PackageState;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -22,7 +23,7 @@ import java.util.concurrent.Future;
  */
 @Slf4j
 public class MyKafkaProducer {
-    private static final String TEST_TOPIC = "test_topic";
+    private static final String PACKAGE_STATE_TOPIC = "package_state";
     private static final String BROKERS = "localhost:9092";
     private static final String KAFKA_ADDRESS_ENV = "KAFKA_ADDRESS";
     public static void main(String[] args) throws ExecutionException, InterruptedException {
@@ -38,17 +39,12 @@ public class MyKafkaProducer {
 
         Properties properties = createKafkaProperties(brokers);
         KafkaProducer<byte[], byte[]> kafkaProducer = new KafkaProducer<>(properties);
+
         Random random = new Random();
         while (true) {
-            Student student = new Student();
-
-            int randomInt = random.nextInt(10);
-            student.setName("Cookie" + randomInt);
-
-            randomInt = random.nextInt(20) + 10;
-            student.setAge(randomInt);
-            byte[] value = JSONObject.toJSONBytes(student, SerializerFeature.NotWriteDefaultValue);
-            ProducerRecord<byte[], byte[]> record = new ProducerRecord<>(TEST_TOPIC, value);
+            PackageState packageState = PackageStateMockHelper.mock();
+            byte[] value = JSONObject.toJSONBytes(packageState, SerializerFeature.NotWriteDefaultValue);
+            ProducerRecord<byte[], byte[]> record = new ProducerRecord<>(PACKAGE_STATE_TOPIC, value);
             Future<RecordMetadata> future = kafkaProducer.send(record);
 
 //            kafkaProducer.flush();
